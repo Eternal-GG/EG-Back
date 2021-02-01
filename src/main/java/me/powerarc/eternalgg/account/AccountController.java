@@ -9,9 +9,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
@@ -28,52 +30,70 @@ public class AccountController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity register(@RequestBody AccountRegisterRequest request) {
-        if (accountService.register(request)) {
-            System.out.println(accountService.find(request.getEmail()).getRoles());
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity register(@RequestBody @Valid AccountRegisterRequest request, Errors errors) {
+        if (errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors);
         }
+
+        if (!accountService.register(request)) {
+            errors.reject("wrongValues", "Values are wrong");
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
-    @ResponseBody
-    public ResponseEntity login(@RequestBody AccountLoginRequest request) {
-        if (accountService.login(request)) {
-            return ResponseEntity.ok().body(jwtTokenProvider.createToken(request.getEmail()));
-        } else {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity login(@RequestBody @Valid AccountLoginRequest request, Errors errors) {
+        if (errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors);
         }
+        if (!accountService.login(request)) {
+            errors.reject("wrongValues", "Values are wrong");
+            return ResponseEntity.badRequest().body(errors);
+        }
+        return ResponseEntity.ok().body(jwtTokenProvider.createToken(request.getEmail()));
+
     }
 
     @PostMapping("/remove")
     @ResponseBody
-    public ResponseEntity withdrawal(@RequestBody AccountWithdrawalRequest password, HttpServletRequest request) {
-        if (accountService.withdrawal(request, password.getPassword())) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity withdrawal(@RequestBody @Valid AccountWithdrawalRequest password, HttpServletRequest request, Errors errors) {
+        if (errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors);
         }
+
+        if (!accountService.withdrawal(request, password.getPassword())) {
+            errors.reject("wrongValues", "Values are wrong");
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/updatepassword")
     @ResponseBody
-    public ResponseEntity updatePassword(@RequestBody AccountUpdatePasswordRequest password, HttpServletRequest request) {
-        if (accountService.passwordUpdate(request, password)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity updatePassword(@RequestBody @Valid AccountUpdatePasswordRequest password, HttpServletRequest request, Errors errors) {
+        if (errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors);
         }
+
+        if (!accountService.passwordUpdate(request, password)) {
+            errors.reject("wrongValues", "Values are wrong");
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/check-email-token/{token}/{email}")
     public String checkEmail(@PathVariable String token,@PathVariable String email) {
-        if (accountService.checkEmailToken(token, email)) {
-            return "redirect:https://naver.com";
-        } else {
+        if (!accountService.checkEmailToken(token, email)) {
             return "redirect:https://cafe.naver.com/joonggonara";
         }
+
+        return "redirect:https://naver.com";
+
     }
 
 }

@@ -42,14 +42,11 @@ public class AccountService implements UserDetailsService {
     public boolean login(AccountLoginRequest request) {
         Optional<Account> account = accountRepository.findByEmail(request.getEmail());
         if (account.isPresent()) {
-            if (passwordEncoder.matches(request.getPassword(), account.get().getPassword()) && account.get().isEmailVerified()) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
+            boolean matches = passwordEncoder.matches(request.getPassword(), account.get().getPassword());
+            boolean emailVerified = account.get().isEmailVerified();
+            return matches && emailVerified;
         }
+        return false;
     }
 
     public boolean register(AccountRegisterRequest request) {
@@ -81,9 +78,9 @@ public class AccountService implements UserDetailsService {
             } catch (Exception e) {
                 return false;
             }
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     public boolean withdrawal(HttpServletRequest request, String password) {
@@ -119,10 +116,13 @@ public class AccountService implements UserDetailsService {
         Account account = find(email);
         if (account == null && !account.getEmailCheckToken().equals(token)) {
             return false;
-        } else {
-            account.setEmailVerified(true);
+        }
+        account.setEmailVerified(true);
+        try {
             accountRepository.save(account);
             return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
