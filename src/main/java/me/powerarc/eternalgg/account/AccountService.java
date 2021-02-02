@@ -107,7 +107,7 @@ public class AccountService implements UserDetailsService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(account.getEmail());
         mailMessage.setSubject("Eternal-GG 회원 가입 인증 메일");
-        mailMessage.setText("회원 인증을 하시려면 해당 링크로 접속해 주세요. \n" +"http://localhost:8080/user/check-email-token/" + account.getEmailCheckToken()
+        mailMessage.setText("회원 인증을 하시려면 해당 링크로 접속해 주세요. \n" +"http://ec2-13-125-130-41.ap-northeast-2.compute.amazonaws.com:8080/user/check-email-token/" + account.getEmailCheckToken()
                 + "/" + account.getEmail());
         javaMailSender.send(mailMessage);
     }
