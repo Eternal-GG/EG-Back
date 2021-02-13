@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### DB ###
+application.properties
 
 ### STS ###
 .apt_generated
