@@ -89,10 +89,10 @@ public class AccountController {
     @GetMapping("/check-email-token/{token}/{email}")
     public String checkEmail(@PathVariable String token,@PathVariable String email) {
         if (!accountService.checkEmailToken(token, email)) {
-            return "redirect:https://cafe.naver.com/joonggonara";
+            return "redirect:http://egf-bucket.s3-website.ap-northeast-2.amazonaws.com/";
         }
 
-        return "redirect:https://naver.com";
+        return "redirect:http://egf-bucket.s3-website.ap-northeast-2.amazonaws.com/";
 
     }
 
