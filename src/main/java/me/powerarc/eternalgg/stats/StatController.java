@@ -21,9 +21,9 @@ public class StatController {
     @Autowired
     ModelMapper modelMapper;
 
-    @GetMapping("/stat/{nickname}")
-    public ResponseEntity getStat(@PathVariable String nickname) {
-        List<Stat> stats = statService.getStats(nickname);
+    @GetMapping("/stat/{nickname}/{season}")
+    public ResponseEntity getStat(@PathVariable String nickname, @PathVariable short season) {
+        List<Stat> stats = statService.getStats(nickname, season);
         List<StatResponse> response = modelMapper.map(stats, new TypeToken<List<StatResponse>>() {
         }.getType());
 

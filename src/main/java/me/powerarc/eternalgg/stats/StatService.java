@@ -1,12 +1,7 @@
 package me.powerarc.eternalgg.stats;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import me.powerarc.eternalgg.common.RestApi;
-import me.powerarc.eternalgg.stats.request.response.StatResponse;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +15,12 @@ public class StatService {
     @Autowired
     RestApi restApi;
 
-    public List<Stat> getStats(String nickname) {
-        List<Stat> byNickname = statRepository.findByNickname(nickname);
-
+    public List<Stat> getStats(String nickname, short season) {
+        List<Stat> byNickname = statRepository.findByNicknameAndSeasonId(nickname ,season);
         if (byNickname.isEmpty()) {
             try {
                 String userNum = restApi.getUserNum(nickname);
-                List<Stat> stats = restApi.getStats(userNum, 0);
+                List<Stat> stats = restApi.getStats(userNum, season);
                 statRepository.saveAll(stats);
                 return stats;
             } catch (Exception e) {
