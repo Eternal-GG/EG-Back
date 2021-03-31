@@ -8,8 +8,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.text.SimpleDateFormat;
 
@@ -17,7 +15,7 @@ import java.text.SimpleDateFormat;
 public class CommonConfiguration {
 
     private final String HEADER = "x-api-key";
-    private final String KEY = "Ty4XkM31708YNpCXgbxWs1iHbiHZcgKRbBBYMYZi";
+    private final String KEY = "4NDZar5anO7m5G3sO9XxC3zdfetyA7qX9xPKfUId";
 
     @Bean
     public RestTemplate restTemplate() {

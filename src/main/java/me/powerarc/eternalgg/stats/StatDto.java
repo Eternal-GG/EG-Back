@@ -7,7 +7,11 @@ import org.modelmapper.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class StatDto {
 
     private short seasonId;
@@ -57,7 +61,12 @@ public class StatDto {
     private List<CharacterStat> characterStat = new ArrayList<>();
 
     public void map(ModelMapper modelMapper) {
-        this.characterStat = modelMapper.map(characterStats, new TypeToken<List<CharacterStat>>() {}.getType());
+        this.characterStat = modelMapper.map(characterStats, new TypeToken<List<CharacterStat>>() {
+        }.getType());
+        for (int i = 0; i < characterStat.size(); i++) {
+            characterStat.get(i).setTopThree(characterStats.get(i).getTop3());
+            characterStat.get(i).setTopThreeRank(characterStats.get(i).getTop3Rate());
+        }
         this.user_rank = rank;
     }
 
