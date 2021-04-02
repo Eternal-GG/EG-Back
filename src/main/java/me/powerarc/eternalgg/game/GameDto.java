@@ -3,11 +3,12 @@ package me.powerarc.eternalgg.game;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.Date;
-
-@Getter @Setter
-@Builder @AllArgsConstructor @NoArgsConstructor @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GameDto {
 
     private long gameId;
@@ -16,73 +17,73 @@ public class GameDto {
 
     private String nickname;
 
-    private short seasonId;
+    private int seasonId;
 
-    private short matchingMode;
+    private int matchingMode;
 
-    private short matchingTeamMode;
+    private int matchingTeamMode;
 
-    private short characterNum;
+    private int characterNum;
 
-    private short skinCode;
+    private int skinCode;
 
-    private short characterLevel;
+    private int characterLevel;
 
-    private short gameRank;
+    private int gameRank;
 
-    private short playerKill;
+    private int playerKill;
 
-    private short playerAssistant;
+    private int playerAssistant;
 
-    private short monsterKill;
+    private int monsterKill;
 
-    private short bestWeapon;
+    private int bestWeapon;
 
-    private short bestWeaponLevel;
+    private int bestWeaponLevel;
 
-    private short versionMajor;
+    private int versionMajor;
 
-    private short versionMinor;
+    private int versionMinor;
 
     private String serverName;
 
-    private short maxHp;
+    private int maxHp;
 
-    private short maxSp;
+    private int maxSp;
 
-    private short attackPower;
+    private int attackPower;
 
-    private short defense;
+    private int defense;
 
-    private float hpRegen;
+    private double hpRegen;
 
-    private float spRegen;
+    private double spRegen;
 
-    private float attackSpeed;
+    private double attackSpeed;
 
-    private float moveSpeed;
+    private double moveSpeed;
 
-    private float outOfCombatMoveSpeed;
+    private double outOfCombatMoveSpeed;
 
-    private float sightRange;
+    private double sightRange;
 
-    private float attackRange;
+    private double attackRange;
 
-    private float criticalStrikeChance;
+    private double criticalStrikeChance;
 
-    private float criticalStrikeDamage;
+    private double criticalStrikeDamage;
 
-    private float coolDownReduction;
+    private double coolDownReduction;
 
-    private float lifeSteal;
+    private double lifeSteal;
 
-    private float amplifierToMonster;
+    private double amplifierToMonster;
 
-    private float trapDamage;
+    private double trapDamage;
 
-    private short gainExp;
+    private int gainExp;
 
-    private short duration;
+    private int duration;
 
     private int damageToPlayer;
 
@@ -90,19 +91,19 @@ public class GameDto {
 
     private long killerUserNum;
 
-    private short playTime;
+    private int playTime;
 
-    private short watchTime;
+    private int watchTime;
 
-    private short totalTime;
+    private int totalTime;
 
-    private short botAdded;
+    private int botAdded;
 
-    private short Remain;
+    private int Remain;
 
-    private short restrictedAreaAccelerated;
+    private int restrictedAreaAccelerated;
 
-    private short safeAreas;
+    private int safeAreas;
 
     private String killer;
 
@@ -110,21 +111,21 @@ public class GameDto {
 
     private String causeOfDeath;
 
-    private short teamNumber;
+    private int teamNumber;
 
-    private short preMade;
+    private int preMade;
 
     private double gainedNormalMmrKFactor;
 
-    private short victory;
+    private int victory;
 
-    private short craftUncommon;
+    private int craftUncommon;
 
-    private short craftRare;
+    private int craftRare;
 
-    private short craftEpic;
+    private int craftEpic;
 
-    private short craftLegend;
+    private int craftLegend;
 
     private int trapDamageToPlayer;
 

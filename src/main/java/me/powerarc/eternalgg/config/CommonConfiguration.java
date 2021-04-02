@@ -15,7 +15,8 @@ import java.text.SimpleDateFormat;
 public class CommonConfiguration {
 
     private final String HEADER = "x-api-key";
-    private final String KEY = "4NDZar5anO7m5G3sO9XxC3zdfetyA7qX9xPKfUId";
+    private final String[] KEY = {"4NDZar5anO7m5G3sO9XxC3zdfetyA7qX9xPKfUId", "Ty4XkM31708YNpCXgbxWs1iHbiHZcgKRbBBYMYZi"};
+
 
     @Bean
     public RestTemplate restTemplate() {
@@ -29,7 +30,7 @@ public class CommonConfiguration {
     @Bean
     public HttpEntity<?> httpEntity() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HEADER, KEY);
+        headers.add(HEADER, KEY[1]);
         HttpEntity<?> entity = new HttpEntity<>(headers);
         return entity;
     }
