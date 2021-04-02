@@ -24,8 +24,7 @@ public class GameService {
         if (!exist) {
             try {
                 String userNum = restApi.getUserNum(nickname);
-                games = restApi.getGames(userNum, "");
-                System.out.println(games.get(0).getGameId());
+                games = restApi.getGames(userNum);
                 gameRepository.saveAll(games);
                 games = games.subList(0, 20);
                 return games;

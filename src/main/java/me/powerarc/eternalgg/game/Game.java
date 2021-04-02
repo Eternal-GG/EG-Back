@@ -1,13 +1,19 @@
 package me.powerarc.eternalgg.game;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity @Getter @Setter
-@Builder @AllArgsConstructor @NoArgsConstructor @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Game {
 
     @Id
@@ -20,40 +26,40 @@ public class Game {
     private String nickname;
 
     @Column(nullable = false)
-    private short seasonId;
+    private int seasonId;
 
     @Column(nullable = false)
-    private short matchingMode;
+    private int matchingMode;
 
     @Column(nullable = false)
-    private short matchingTeamMode;
+    private int matchingTeamMode;
 
     @Column(nullable = false)
-    private short characterNum;
+    private int characterNum;
 
     @Column(nullable = false)
-    private short skinCode;
+    private int skinCode;
 
     @Column(nullable = false)
-    private short characterLevel;
+    private int characterLevel;
 
     @Column(nullable = false)
-    private short gameRank;
+    private int gameRank;
 
     @Column(nullable = false)
-    private short playerKill;
+    private int playerKill;
 
     @Column(nullable = false)
-    private short playerAssistant;
+    private int playerAssistant;
 
     @Column(nullable = false)
-    private short monsterKill;
+    private int monsterKill;
 
     @Column(nullable = false)
-    private short bestWeapon;
+    private int bestWeapon;
 
     @Column(nullable = false)
-    private short bestWeaponLevel;
+    private int bestWeaponLevel;
 
 //    private MasteryLevel masteryLevel;
 
@@ -61,74 +67,75 @@ public class Game {
     private Equipment equipment;
 
     @Column(nullable = false)
-    private short versionMajor;
+    private int versionMajor;
 
     @Column(nullable = false)
-    private short versionMinor;
+    private int versionMinor;
 
     @Column(nullable = false)
     private String serverName;
 
     @Column(nullable = false)
-    private short maxHp;
+    private int maxHp;
 
     @Column(nullable = false)
-    private short maxSp;
+    private int maxSp;
 
     @Column(nullable = false)
-    private short attackPower;
+    private int attackPower;
 
     @Column(nullable = false)
-    private short defense;
+    private int defense;
 
     @Column(nullable = false)
-    private float hpRegen;
+    private double hpRegen;
 
     @Column(nullable = false)
-    private float spRegen;
+    private double spRegen;
 
     @Column(nullable = false)
-    private float attackSpeed;
+    private double attackSpeed;
 
     @Column(nullable = false)
-    private float moveSpeed;
+    private double moveSpeed;
 
     @Column(nullable = false)
-    private float outOfCombatMoveSpeed;
+    private double outOfCombatMoveSpeed;
 
     @Column(nullable = false)
-    private float sightRange;
+    private double sightRange;
 
     @Column(nullable = false)
-    private float attackRange;
+    private double attackRange;
 
     @Column(nullable = false)
-    private float criticalStrikeChance;
+    private double criticalStrikeChance;
 
     @Column(nullable = false)
-    private float criticalStrikeDamage;
+    private double criticalStrikeDamage;
 
     @Column(nullable = false)
-    private float coolDownReduction;
+    private double coolDownReduction;
 
     @Column(nullable = false)
-    private float lifeSteal;
+    private double lifeSteal;
 
     @Column(nullable = false)
-    private float amplifierToMonster;
+    private double amplifierToMonster;
 
     @Column(nullable = false)
-    private float trapDamage;
+    private double trapDamage;
 
     @Column(nullable = false)
-    private short gainExp;
+    private int gainExp;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     @Column(nullable = false)
-    private short duration;
+    private int duration;
 
     @Column(nullable = false)
     private int damageToPlayer;
@@ -140,25 +147,25 @@ public class Game {
     private long killerUserNum;
 
     @Column(nullable = false)
-    private short playTime;
+    private int playTime;
 
     @Column(nullable = false)
-    private short watchTime;
+    private int watchTime;
 
     @Column(nullable = false)
-    private short totalTime;
+    private int totalTime;
 
     @Column(nullable = false)
-    private short botAdded;
+    private int botAdded;
 
     @Column(nullable = false)
-    private short Remain;
+    private int Remain;
 
     @Column(nullable = false)
-    private short restrictedAreaAccelerated;
+    private int restrictedAreaAccelerated;
 
     @Column(nullable = false)
-    private short safeAreas;
+    private int safeAreas;
 
     @Column(nullable = false)
     private String killer;
@@ -170,28 +177,28 @@ public class Game {
     private String causeOfDeath;
 
     @Column(nullable = false)
-    private short teamNumber;
+    private int teamNumber;
 
     @Column(nullable = false)
-    private short preMade;
+    private int preMade;
 
     @Column(nullable = false)
     private double gainedNormalMmrKFactor;
 
     @Column(nullable = false)
-    private short victory;
+    private int victory;
 
     @Column(nullable = false)
-    private short craftUncommon;
+    private int craftUncommon;
 
     @Column(nullable = false)
-    private short craftRare;
+    private int craftRare;
 
     @Column(nullable = false)
-    private short craftEpic;
+    private int craftEpic;
 
     @Column(nullable = false)
-    private short craftLegend;
+    private int craftLegend;
 
     @Column(nullable = false)
     private int trapDamageToPlayer;
@@ -204,5 +211,4 @@ public class Game {
 
     @Column(nullable = false)
     private String skillOrder;
-
 }

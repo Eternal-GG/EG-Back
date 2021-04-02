@@ -68,6 +68,7 @@ public class RestApi {
         }
     }
 
+
     public List<Stat> getStats(String userNum, int seasonId) {
         String url = PREFIX + STATS + userNum + "/" + seasonId;
         UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
@@ -91,106 +92,112 @@ public class RestApi {
         return stats;
     }
 
-    public List<Game> getGames(String userNum, String next) {
-        String url = PREFIX + GAMES + userNum + next;
+
+    public List<Game> getGames(String userNum) {
+        String url = PREFIX + GAMES + userNum;
         UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
 
         List<Game> games = new ArrayList<>();
-
         String result = "";
+
         try {
-            resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
-            result = objectMapper.writeValueAsString(resultMap.getBody().get(USERGAMES));
+            while (true) {
+                resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
+                result = objectMapper.writeValueAsString(resultMap.getBody().get(USERGAMES));
 
-            JSONObject jsonObject = new JSONObject(resultMap.getBody());
-            JSONArray jsonArray = jsonObject.getJSONArray(USERGAMES);
+                JSONObject jsonObject = new JSONObject(resultMap.getBody());
+                JSONArray jsonArray = jsonObject.getJSONArray(USERGAMES);
 
-            GameDto[] game = objectMapper.readValue(result, GameDto[].class);
-            games = modelMapper.map(game, new TypeToken<List<Game>>() {
-            }.getType());
+                GameDto[] game = objectMapper.readValue(result, GameDto[].class);
+                List<Game> gameList = new ArrayList<>();
+                gameList = modelMapper.map(game, new TypeToken<List<Game>>() {
+                }.getType());
 
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonGame = (JSONObject) jsonArray.get(i);
+                    JSONObject skillOrderInfo = jsonGame.getJSONObject("skillOrderInfo");
+                    JSONObject jsonEquipment = jsonGame.getJSONObject("equipment");
+                    String Date = jsonGame.getString("startDtm");
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonGame = (JSONObject) jsonArray.get(i);
-                JSONObject skillOrderInfo = jsonGame.getJSONObject("skillOrderInfo");
-                JSONObject jsonEquipment = jsonGame.getJSONObject("equipment");
-                String Date = jsonGame.getString("startDtm");
+                    Date date = sdf.parse(Date);
+                    gameList.get(i).setDate(date);
 
-                Date date = sdf.parse(Date);
-                games.get(i).setDate(date);
+                    Set<String> strings = jsonEquipment.keySet();
+                    Equipment equipments = new Equipment();
+                    strings.forEach(k -> {
+                        Long equipment = Long.valueOf(jsonEquipment.get(k).toString());
+                        switch (k) {
+                        case "0":
+                            equipments.setZero(equipment);
+                            break;
+                        case "1":
+                            equipments.setOne(equipment);
+                            break;
+                        case "2":
+                            equipments.setTwo(equipment);
+                            break;
+                        case "3":
+                            equipments.setThree(equipment);
+                            break;
+                        case "4":
+                            equipments.setFour(equipment);
+                            break;
+                        case "5":
+                            equipments.setFive(equipment);
+                            break;
+                        default:
+                            break;
+                        }
+                    });
 
-                Set<String> strings = jsonEquipment.keySet();
-                Equipment equipments = new Equipment();
-                strings.forEach(k -> {
-                    Long equipment = Long.valueOf(jsonEquipment.get(k).toString());
-                    switch (k) {
-                    case "0":
-                        equipments.setZero(equipment);
-                        break;
-                    case "1":
-                        equipments.setOne(equipment);
-                        break;
-                    case "2":
-                        equipments.setTwo(equipment);
-                        break;
-                    case "3":
-                        equipments.setThree(equipment);
-                        break;
-                    case "4":
-                        equipments.setFour(equipment);
-                        break;
-                    case "5":
-                        equipments.setFive(equipment);
-                        break;
-                    default:
-                        break;
+                    gameList.get(i).setEquipment(equipments);
+
+                    String skillOrder = "";
+                    for (int j = 1; j < skillOrderInfo.length(); j++) {
+                        int skillNum = (int) skillOrderInfo.get(String.valueOf(j));
+                        skillNum %= 1000;
+                        switch (skillNum / 100) {
+                        case 1:
+                            skillOrder += "P";
+                            break;
+                        case 2:
+                            skillOrder += "Q";
+                            break;
+                        case 3:
+                            skillOrder += "W";
+                            break;
+                        case 4:
+                            skillOrder += "E";
+                            break;
+                        case 5:
+                            skillOrder += "R";
+                            break;
+                        default:
+                            break;
+                        }
                     }
-                });
+                    gameList.get(i).setSkillOrder(skillOrder);
 
-                games.get(i).setEquipment(equipments);
-
-                String skillOrder = "";
-                for (int j = 1; j < skillOrderInfo.length(); j++) {
-                    int skillNum = (int) skillOrderInfo.get(String.valueOf(j));
-                    skillNum %= 1000;
-                    switch (skillNum / 100) {
-                    case 1:
-                        skillOrder += "P";
-                        break;
-                    case 2:
-                        skillOrder += "Q";
-                        break;
-                    case 3:
-                        skillOrder += "W";
-                        break;
-                    case 4:
-                        skillOrder += "E";
-                        break;
-                    case 5:
-                        skillOrder += "R";
-                        break;
-                    default:
-                        break;
-                    }
                 }
-                games.get(i).setSkillOrder(skillOrder);
 
-            }
-
-            next = objectMapper.writeValueAsString(resultMap.getBody().get("next"));
-            if (!next.equals("null")) {
-                next = "?next=" + next;
-                List<Game> gameList = getGames(userNum, next);
+                String next = objectMapper.writeValueAsString(resultMap.getBody().get("next"));
                 games.addAll(gameList);
+                if (next.equals("null")) {
+                    break;
+                }
+                next = "?next=" + next;
+                url = PREFIX + GAMES + userNum + next;
+                uri = UriComponentsBuilder.fromHttpUrl(url).build();
+                System.out.println(url);
+                Thread.sleep(1000);
             }
-
-            return games;
-
         } catch (Exception e) {
             e.printStackTrace();
             return games;
         }
-    }
 
+        System.out.println(games.size());
+        return games;
+    }
 
 }
