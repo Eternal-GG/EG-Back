@@ -1,5 +1,6 @@
 package me.powerarc.eternalgg.stats;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity @Getter @Setter
 @Builder @AllArgsConstructor @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Stat {
 
     @Id @GeneratedValue
@@ -39,6 +41,9 @@ public class Stat {
 
     @Column(nullable = false)
     private long totalGames;
+
+    @Column(nullable = false)
+    private long totalTeamKills;
 
     @Column(nullable = false)
     private long totalWins;
