@@ -34,6 +34,8 @@ public class StatDto {
 
     private long totalGames;
 
+    private long totalTeamKills;
+
     private long totalWins;
 
     private float rankPercent;
